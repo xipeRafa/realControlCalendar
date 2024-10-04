@@ -1,0 +1,31 @@
+
+
+
+
+
+
+body{
+  background-color: gainsboro!important;
+  user-select: none;
+}
+
+select {
+  margin-bottom: 10px!important;
+}
+
+input{
+  margin-bottom: 10px!important;
+}
+
+label{
+  color: gray!important;
+}
+
+textarea{
+    margin-bottom: 10px!important;
+}
+
+.red{
+  background-color: red!important;
+  border: none!important;
+}
