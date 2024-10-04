@@ -7,11 +7,22 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
+import { Calendar, dayjsLocalizer } from 'react-big-calendar'
+import dayjs from 'dayjs'
+
+const localizer = dayjsLocalizer(dayjs)
+
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+import 'dayjs/locale/es'
+
+dayjs.locale('es')
 
 
- import { firestoreDB, storageDocs } from './firebase/firebaseConfig';
 
- import {
+import { firestoreDB, storageDocs } from './firebase/firebaseConfig';
+
+import {
   getDocs,
   collection,
   addDoc,
@@ -181,7 +192,6 @@ function App() {
 
   const updateById = async (id, obj) => {
 
-
       setSaveObj(obj)
       setSaveID(id)
 
@@ -217,179 +227,100 @@ function App() {
 
 
 
-    const [clienteNameFinder, setClienteNameFinder]=useState()
+    // const [clienteNameFinder, setClienteNameFinder]=useState()
 
-    const handlerFinder =(e)=>{
-        if(e.target.value.length > 3){
-            setClienteNameFinder(e.target.value)
-        }
-    }
+    // const handlerFinder =(e)=>{
+    //     if(e.target.value.length > 3){
+    //         setClienteNameFinder(e.target.value)
+    //     }
+    // }
 
 
 
-    const [show, setShow] = useState(false);
+    // const [show, setShow] = useState(false);
 
-    const handleClose = () => {
-      setUpdateMode(false)
-      setShow(false)
-    }
+    // const handleClose = () => {
+    //   setUpdateMode(false)
+    //   setShow(false)
+    // }
 
-    const handleShow = () => setShow(true);
+    // const handleShow = () => setShow(true);
+
+  let myEventsList =[{
+      start:dayjs('2024-10-4T12:00:00').toDate(),
+      end:dayjs('2024-10-4T13:00:00').toDate(),
+      title:'Primer evento',
+      data:{
+        d:'10'
+      }
+  },{
+      start:dayjs('2024-10-5T7:00:00').toDate(),
+      end:dayjs('2024-10-5T8:00:00').toDate(),
+      title:'Segundo evento',
+      data:{
+        d:'20'
+      }
+  }]
+
+
+  const messages = {
+    allDay: "Todo el día",
+    previous: "Anterior",
+    next: "Siguiente",
+    today: "Hoy",
+    month: "Mes",
+    week: "Semana",
+    day: "Día",
+    agenda: "Agenda",
+    date: "Fecha",
+    time: "Hora",
+    event: "Evento",
+    noEventsInRange: "Sin eventos"
+};
+
+
+const components={
+  event: e =>{
+    // console.log(e)
+    return<div className='events'>
+        <span>{e.title}</span>
+        <span>{e.event.data.d} </span>
+    </div>
+  }
+}
+
+
+const [selected, setSelected] = useState();
+
+const handleSelected = (event) => {
+    setSelected(event.data.d);
+    console.info(event.title);
+};
 
 
   return (
     <>
 
-      <Container>
-        <Row>
-        <Col>
-
-        <h1>Calendario</h1>
-        <hr />
-      <Form>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-            <Form.Label>Nombre de Cliente</Form.Label>
-            <Form.Control type="text" name='nombreCliente' value={nombreCliente} onChange={(e)=>handlerTaskState(e)} />
-
-            <Form.Label>Direccion de Cliente</Form.Label>
-            <Form.Control type="text" name='direccionCliente' value={direccionCliente} onChange={(e)=>handlerTaskState(e)}/>
-
-            <Form.Label>Telefono de Cliente</Form.Label>
-            <Form.Control type="text" name='telefonoCliente' value={telefonoCliente} onChange={(e)=>handlerTaskState(e)}/>
-
-            <Form.Label>Correo de Cliente</Form.Label>
-            <Form.Control type="mail" name='correoCliente' value={correoCliente} placeholder='@' onChange={(e)=>handlerTaskState(e)}/>
-
-            <Form.Label>Servicio Realizado</Form.Label>
-            <Form.Control as="textarea" name='servicioRealizado' value={servicioRealizado} onChange={(e)=>handlerTaskState(e)}/>
-
-            <Form.Label>Fecha y Hora de Atencion</Form.Label>
-            <Form.Control type="text" name='fechaMeta' value={fechaMeta} onChange={(e)=>handlerTaskState(e)}/>
-
-            <Form.Label>Tipo de Servicio</Form.Label>
-            <Form.Select value={tipoDeServicio} name='tipoDeServicio' onChange={(e)=>handlerTaskState(e)}>
-
-              <option></option>
-              <option value="domestica chica">Domestica Chica</option>
-              <option value="comercial chica">Comercial Chica</option>
-              <option value="industrial chica">Industrial Chica</option>
-
-              <hr />
-
-              <option value="domestica mediana">Domestica Mediana</option>
-              <option value="comercial mediana">Comercial Mediana</option>
-              <option value="industrial mediana">Industrial Mediana</option>
-
-              <hr />
-
-              <option value="domestica grande">Domestica Grande</option>
-              <option value="comercial grande">Comercial Grande</option>
-              <option value="industrial grande">Industrial Grande</option>
-            </Form.Select>
-        </Form.Group>
-
-        <Form.Label>Comentarios</Form.Label>
-        <Form.Control as="textarea" name='comentarios' value={comentarios} onChange={(e)=>handlerTaskState(e)} />
-      </Form>
-
-      <Button variant="primary" onClick={guardar}>
-          GUARDAR
-      </Button>
-
-
-
-        </Col>
-        </Row>
-      </Container>
-
   
 
-      <Container>
-        <Row>
-          <Col>
-
-          <hr />
-
-           <Form.Label>Buscar por Nombre de Cliente</Form.Label>
-            <Form.Control type="search" name='nombreClienteFinder'  onChange={(e)=>handlerFinder(e)} />
-
-              {items?.filter((el) => el.nombreCliente.indexOf(clienteNameFinder) > -1).map((el, i)=>(
-                  <div key={i}>
-
-                    <hr />
-
-                    <p>Cliente: {el.nombreCliente}</p>
-                    <p>Direccion: {el.direccionCliente}</p>
-                    <p>Telefono: {el.telefonoCliente}</p>
-                    <p>Correo: {el.correoCliente}</p>
-                    <hr />
-                    {el.dataArr.map((el, i)=>(
-                        <div key={i}>
-                            <p>Servicio:{el.servicioRealizado}</p>
-                            <p>Hora:{el.fechaMeta}</p>
-                            <p>Tipo:{el.tipoDeServicio}</p>
-                            <p>Comentarios:{el.comentarios}</p>
-                            <p>Ultima Actualización: {msecToDateNumbers(el?.lastTime)}</p>
-                            <hr />
-                        </div>
-                    ))}
-
-                    <Button disabled={el.completed} variant="info" onClick={()=>{updateById(el.id, el), handleShow()}}>
-                        Actualizar {el.nombreCliente}
-                    </Button>
-
-                    <p className={!el?.completedTime ? 'd-none' : 'warning'}>Completado el: {msecToDateNumbers(el?.completedTime)}</p>
-
-                    <hr />
-                  </div>
-                ))}
-          </Col>
-        </Row>
-      </Container>
+        <h1>Calendario</h1>
 
 
-
-      <Modal show={show} onHide={handleClose}>
-
-        <Modal.Header closeButton>
-          <Modal.Title>Guardar Ultimo Servicio</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-            <Form.Control placeholder='Servicio Realizado' name='servicioRealizado' onChange={(e)=>handlerUpdateMode(e)}/>
-            <Form.Control placeholder='Fecha y Hora' name='fechaMeta' onChange={(e)=>handlerUpdateMode(e)}/>
-
-            <Form.Label>Tipo de Servicio</Form.Label>
-            <Form.Select name='tipoDeServicio' onChange={(e)=>handlerUpdateMode(e)}>
-
-              <option></option>
-              <option value="domestica chica">Domestica Chica</option>
-              <option value="comercial chica">Comercial Chica</option>
-              <option value="industrial chica">Industrial Chica</option>
-
-              <hr />
-
-              <option value="domestica mediana">Domestica Mediana</option>
-              <option value="comercial mediana">Comercial Mediana</option>
-              <option value="industrial mediana">Industrial Mediana</option>
-
-              <hr />
-
-              <option value="domestica grande">Domestica Grande</option>
-              <option value="comercial grande">Comercial Grande</option>
-              <option value="industrial grande">Industrial Grande</option>
-            </Form.Select>
-
-
-            <Form.Control placeholder='Comentarios' name='comentarios' onChange={(e)=>handlerUpdateMode(e)}/>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button variant="info" onClick={()=>{updateById(), handleClose()}}>
-              Guardar Nueva Info
-          </Button>
-        </Modal.Footer>
-      </Modal>
+        <div  style={{ height: '90vh', width:'90vw', marginLeft:'5vw'}}>
+            <Calendar
+                localizer={localizer}
+                events={myEventsList}
+                startAccessor="start"
+                endAccessor="end"
+                onSelectEvent={handleSelected}
+               
+                views={['month','week','day','agenda']}
+                toolbar={true}
+                messages={messages}
+                components={components}
+            />
+        </div>
+       
 
 
     </>
@@ -397,3 +328,4 @@ function App() {
 }
 
 export default App
+  

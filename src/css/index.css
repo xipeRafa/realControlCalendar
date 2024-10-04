@@ -29,3 +29,12 @@ textarea{
   background-color: red!important;
   border: none!important;
 }
+
+.rbc-day-bg{
+    background-color: rgba(256, 256, 256, .4);
+}
+
+.events{
+    display: flex;
+    justify-content: space-evenly;
+}
