@@ -10,7 +10,7 @@ Currently, two official plugins are available:
 
 
 
-https://xiperafa.github.io/realControlDBCustomers 
+https://xiperafa.github.io/realControlCalendar/
 
-# realControlDBCustomers
+
 # realControlCalendar
