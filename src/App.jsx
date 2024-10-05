@@ -79,8 +79,30 @@ function App() {
 
 
 
+  let serviciosArr=[]
+
+  
 
 
+  items.forEach((el,i)=>{
+
+    if(el.proximoServicio!==undefined){
+
+        let day = new Date(el.proximoServicio).toLocaleString().split('/')[0]
+        let month = new Date(el.proximoServicio).toLocaleString().split('/')[1]
+        let year = new Date(el.proximoServicio).toLocaleString().split('/')[2].slice(0, 4)
+    
+        let time = new Date(el.proximoServicio).toLocaleString().slice(12,19)  
+        let a = year + '-' + month +'-'+ day + 'T' + time 
+
+
+        serviciosArr.push({title: el.nombreCliente, start:a, end:a})
+
+    }
+
+  })
+
+  console.log(serviciosArr)
 
 
 
@@ -248,7 +270,7 @@ function App() {
 
   let myEventsList =[{
       start:dayjs('2024-10-4T12:00:00').toDate(),
-      end:dayjs('2024-10-4T13:00:00').toDate(),
+      end:dayjs('2024-10-4T12:00:00').toDate(),
       title:'Primer evento',
       data:{
         d:'10'
@@ -262,6 +284,7 @@ function App() {
       }
   }]
 
+console.log(myEventsList)
 
   const messages = {
     allDay: "Todo el día",
@@ -284,7 +307,6 @@ const components={
     // console.log(e)
     return<div className='events'>
         <span>{e.title}</span>
-        <span>{e.event.data.d} </span>
     </div>
   }
 }
