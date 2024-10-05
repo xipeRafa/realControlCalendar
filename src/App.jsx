@@ -88,15 +88,15 @@ function App() {
 
     if(el.proximoServicio!==undefined){
 
-        let day = new Date(el.proximoServicio).toLocaleString().split('/')[0]
-        let month = new Date(el.proximoServicio).toLocaleString().split('/')[1]
-        let year = new Date(el.proximoServicio).toLocaleString().split('/')[2].slice(0, 4)
+        // let day = new Date(el.proximoServicio).toLocaleString().split('/')[0]
+        // let month = new Date(el.proximoServicio).toLocaleString().split('/')[1]
+        // let year = new Date(el.proximoServicio).toLocaleString().split('/')[2].slice(0, 4)
     
-        let time = new Date(el.proximoServicio).toLocaleString().slice(12,19)  
-        let a = year + '-' + month +'-'+ day + 'T' + time 
+        // let time = new Date(el.proximoServicio).toLocaleString().slice(12,19)  
+        // let a = year + '-' + month +'-'+ day + 'T' + time 
 
 
-        serviciosArr.push({title: el.nombreCliente, start:a, end:a})
+        serviciosArr.push({title: el.nombreCliente, start:new Date(el.proximoServicio), end:new Date(el.proximoServicio)})
 
     }
 
@@ -315,7 +315,7 @@ const components={
 const [selected, setSelected] = useState();
 
 const handleSelected = (event) => {
-    setSelected(event.data.d);
+    setSelected(event.title);
     console.info(event.title);
 };
 
@@ -331,7 +331,7 @@ const handleSelected = (event) => {
         <div  style={{ height: '90vh', width:'90vw', marginLeft:'5vw'}}>
             <Calendar
                 localizer={localizer}
-                events={myEventsList}
+                events={serviciosArr}
                 startAccessor="start"
                 endAccessor="end"
                 onSelectEvent={handleSelected}
